@@ -66,16 +66,13 @@ class _QuranDetailsState extends State<QuranDetails> {
     String fileContent = await rootBundle.loadString(
       "assets/files/suras/$suraIndex.txt",
     );
-    var suraLines = fileContent.split("\n"); // list of strings
-    List<String> suraLinesFinal = [];
+    List<String> suraLines = fileContent.trim().split("\n"); // list of strings
     for (int i = 0; i < suraLines.length; i++) {
-      String line = suraLines[i];
-      line += "${i + 1}";
-      suraLinesFinal.add(line);
+      suraLines[i] += "[${i + 1}] ";
     }
-    suraContent = suraLinesFinal.join(
-      "\n",
-    ); // converting it like first, but with index in the end of the line now it is string
+    suraContent =
+        suraLines
+            .join(); // converting it like first, but with index in the end of the line now it is string
     setState(() {});
   }
 }
