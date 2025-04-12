@@ -32,7 +32,7 @@ class _QuranDetailsState extends State<QuranDetails> {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          children: <Widget>[
             Stack(
               alignment: Alignment.center,
               children: [
@@ -53,9 +53,12 @@ class _QuranDetailsState extends State<QuranDetails> {
                 ),
               ],
             ),
-            suraContent.isEmpty
-                ? Center(child: CircularProgressIndicator())
+            Expanded(child: suraContent.isEmpty
+                ? Center(
+                child: CircularProgressIndicator(color: ColorsManager.gold,))
                 : SuraContent(suraContent: suraContent),
+            ),
+            Image.asset(AssetsManager.quranBottomBackGround),
           ],
         ),
       ),
@@ -76,3 +79,4 @@ class _QuranDetailsState extends State<QuranDetails> {
     setState(() {});
   }
 }
+

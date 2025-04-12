@@ -8,13 +8,11 @@ class SuraContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Text(
-          suraContent,
-          textDirection: TextDirection.rtl,
-          style: TextStyle(color: ColorsManager.gold, fontSize: 18),
-        ),
+    return SingleChildScrollView(
+      child: Text(
+        suraContent,
+        textDirection: TextDirection.rtl,
+        style: TextStyle(color: ColorsManager.gold, fontSize: 18),
       ),
     );
   }
