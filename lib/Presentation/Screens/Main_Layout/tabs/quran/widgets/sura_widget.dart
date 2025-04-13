@@ -2,20 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:islami_app/Core/assets_manager.dart';
 import 'package:islami_app/Core/colors_manager.dart';
 import 'package:islami_app/Core/constants_manager.dart';
+import 'package:islami_app/Core/prefs_manager/prefs_manager.dart';
 import 'package:islami_app/Core/routes_manager/app_routes.dart';
+import 'package:islami_app/Presentation/Screens/Main_Layout/tabs/quran/widgets/most_recent_sura_item.dart';
 
 class SuraWidget extends StatelessWidget {
-  const SuraWidget({super.key, required this.suraDM});
+  const SuraWidget({
+    super.key,
+    required this.suraDM,
+    required this.mostRecentKey,
+  });
 
   final SuraDM suraDM;
+  final GlobalKey<MostRecentState> mostRecentKey;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(
-          context,
-        ).pushNamed(AppRoutes.quranDetails, arguments: suraDM);
+        PrefsManager.addSuraIndex(suraDM.index - 1);
+        Navigator.of(context).pushNamed(
+          AppRoutes.quranDetails,
+          arguments: QuranDetailsArgument(
+            suraDM: suraDM,
+            mostRecentKey: mostRecentKey,
+          ),
+        );
       },
       child: Row(
         children: [
@@ -68,4 +80,11 @@ class SuraWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class QuranDetailsArgument {
+  SuraDM suraDM;
+  GlobalKey<MostRecentState> mostRecentKey;
+
+  QuranDetailsArgument({required this.suraDM, required this.mostRecentKey});
 }

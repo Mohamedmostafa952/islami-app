@@ -5,9 +5,18 @@ import 'package:islami_app/Core/constants_manager.dart';
 import 'package:islami_app/Presentation/Screens/Main_Layout/tabs/quran/widgets/most_recent_sura_item.dart';
 import 'package:islami_app/Presentation/Screens/Main_Layout/tabs/quran/widgets/sura_widget.dart';
 
-class Quran extends StatelessWidget {
+class Quran extends StatefulWidget {
   const Quran({super.key});
 
+  @override
+  State<Quran> createState() => _QuranState();
+}
+
+class _QuranState extends State<Quran> {
+  // Quran have MostRecentState's ref
+  String searchKey = "";
+  GlobalKey<MostRecentState> mostRecentKey =
+      GlobalKey<MostRecentState>(); // MostRecentState's ref
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +33,7 @@ class Quran extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Image.asset(AssetsManager.islamiLogo),
-              buildTextField(),
+              buildSearchTextField(),
               SizedBox(height: 10),
               Text(
                 "Most Recently",
@@ -35,14 +44,7 @@ class Quran extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-              SizedBox(
-                height: MediaQuery.sizeOf(context).height * 0.2,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 6,
-                  itemBuilder: (_, _) => MostRecentSuraItem(),
-                ),
-              ),
+              MostRecent(key: mostRecentKey),
               SizedBox(height: 10),
               Text(
                 "Sura List",
@@ -52,30 +54,46 @@ class Quran extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              ListView.separated(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder:
-                    (_, index) =>
-                        SuraWidget(suraDM: ConstantsManager.quranSuras[index]),
-                separatorBuilder:
-                    (_, _) => Divider(
-                      color: ColorsManager.white,
-                      endIndent: 64,
-                      indent: 64,
-                      thickness: 1,
-                    ),
-                itemCount: ConstantsManager.quranSuras.length,
-              ),
-            ],
+              buildSurasList(),
+            ]],
           ),
         ),
       ),
     );
   }
 
-  Widget buildTextField() {
+  Widget buildSurasList() {
+    List<SuraDM> filteredList = ConstantsManager.quranSuras;
+    filteredList =
+        filteredList.where((suraDm) => suraDm.suraNameEn.toLowerCase().contains(
+            searchKey) || suraDm.suraNameAr.contains(searchKey)).toList();
+
+    return ListView.separated(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder:
+          (_, index) =>
+          SuraWidget(
+            suraDM: filteredList[index], mostRecentKey: mostRecentKey,),
+      separatorBuilder:
+          (_, _) =>
+          Divider(
+            color: ColorsManager.white,
+            endIndent: 64,
+            indent: 64,
+            thickness: 1,
+          ),
+      itemCount: filteredList.length,
+    );
+  }
+
+  Widget buildSearchTextField() {
     return TextField(
+      onChanged: (userInput) {
+        setState(() {
+          searchKey = userInput;
+        });
+      },
       cursorColor: ColorsManager.offWhite,
       style: TextStyle(
         fontWeight: FontWeight.normal,
