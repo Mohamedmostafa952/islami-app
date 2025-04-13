@@ -13,9 +13,10 @@ class Quran extends StatefulWidget {
 }
 
 class _QuranState extends State<Quran> {
-
+  // Quran have MostRecentState's ref
   String searchKey = "";
-
+  GlobalKey<MostRecentState> mostRecentKey =
+      GlobalKey<MostRecentState>(); // MostRecentState's ref
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,14 +44,7 @@ class _QuranState extends State<Quran> {
                 ),
               ),
               SizedBox(height: 10),
-              SizedBox(
-                height: MediaQuery.sizeOf(context).height * 0.2,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 6,
-                  itemBuilder: (_, _) => MostRecentSuraItem(),
-                ),
-              ),
+              MostRecent(key: mostRecentKey),
               SizedBox(height: 10),
               Text(
                 "Sura List",
@@ -61,7 +55,7 @@ class _QuranState extends State<Quran> {
                 ),
               ),
               buildSurasList(),
-            ],
+            ]],
           ),
         ),
       ),
@@ -79,7 +73,8 @@ class _QuranState extends State<Quran> {
       shrinkWrap: true,
       itemBuilder:
           (_, index) =>
-          SuraWidget(suraDM: filteredList[index]),
+          SuraWidget(
+            suraDM: filteredList[index], mostRecentKey: mostRecentKey,),
       separatorBuilder:
           (_, _) =>
           Divider(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islami_app/Core/assets_manager.dart';
 import 'package:islami_app/Core/colors_manager.dart';
-import 'package:islami_app/Core/constants_manager.dart';
 import 'package:islami_app/Presentation/Screens/Main_Layout/tabs/quran/widgets/sura_content.dart';
+import 'package:islami_app/Presentation/Screens/Main_Layout/tabs/quran/widgets/sura_widget.dart';
 
 class QuranDetails extends StatefulWidget {
   const QuranDetails({super.key});
@@ -13,21 +13,31 @@ class QuranDetails extends StatefulWidget {
 }
 
 class _QuranDetailsState extends State<QuranDetails> {
-  late SuraDM args;
+  late QuranDetailsArgument args;
   String suraContent = "";
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    args = ModalRoute.of(context)!.settings.arguments as SuraDM;
-    loadSuraContent(args.index);
+    args = ModalRoute
+        .of(context)!
+        .settings
+        .arguments as QuranDetailsArgument;
+    loadSuraContent(args.suraDM.index);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    args.mostRecentKey.currentState!.refreshMostRecent();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(args.suraNameEn)),
+      appBar: AppBar(title: Text(args.suraDM.suraNameEn)),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
@@ -44,7 +54,7 @@ class _QuranDetailsState extends State<QuranDetails> {
                   ],
                 ),
                 Text(
-                  args.suraNameAr,
+                  args.suraDM.suraNameAr,
                   style: TextStyle(
                     color: ColorsManager.gold,
                     fontWeight: FontWeight.bold,
