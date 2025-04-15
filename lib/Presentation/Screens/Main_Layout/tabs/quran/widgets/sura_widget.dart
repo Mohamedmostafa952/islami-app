@@ -47,7 +47,7 @@ class SuraWidget extends StatelessWidget {
           ),
           SizedBox(width: 24),
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 suraDM.suraNameEn,

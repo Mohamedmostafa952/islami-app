@@ -16,7 +16,7 @@ class _QuranState extends State<Quran> {
   // Quran have MostRecentState's ref
   String searchKey = "";
   GlobalKey<MostRecentState> mostRecentKey =
-      GlobalKey<MostRecentState>(); // MostRecentState's ref
+  GlobalKey<MostRecentState>(); // MostRecentState's ref
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,7 +55,7 @@ class _QuranState extends State<Quran> {
                 ),
               ),
               buildSurasList(),
-            ]],
+            ],
           ),
         ),
       ),
