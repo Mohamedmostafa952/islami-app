@@ -18,9 +18,7 @@ class MostRecentState extends State<MostRecent> {
 
   void refreshMostRecent() async {
     mostRecentSuras = await PrefsManager.getMostRecentSuras();
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
@@ -32,30 +30,31 @@ class MostRecentState extends State<MostRecent> {
 
   @override
   Widget build(BuildContext context) {
-    width = MediaQuery
-        .sizeOf(context)
-        .width;
-    return SizedBox(
-      height: MediaQuery
-          .sizeOf(context)
-          .height * 0.2,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: mostRecentSuras.length,
-        itemBuilder: (_, index) => buildMostRecentCard(mostRecentSuras[index]),
-      ),
-    );
+    width = MediaQuery.sizeOf(context).width;
+    return mostRecentSuras.isEmpty
+        ? Center(
+          child: Text(
+            "No mostly recent suras",
+            style: TextStyle(
+              color: ColorsManager.gold,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        )
+        : SizedBox(
+          height: MediaQuery.sizeOf(context).height * 0.2,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: mostRecentSuras.length,
+            itemBuilder:
+                (_, index) => buildMostRecentCard(mostRecentSuras[index]),
+          ),
+        );
   }
 
   Widget buildMostRecentCard(SuraDM suraDm) {
-    return mostRecentSuras.isEmpty ? Center(
-      child: Text("No mostly recent suras", style: TextStyle(
-          color: ColorsManager.gold,
-          fontSize: 12,
-          fontWeight: FontWeight.w500
-      ),),
-    )
-        : Container(
+    return Container(
       margin: EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
         color: ColorsManager.gold,
